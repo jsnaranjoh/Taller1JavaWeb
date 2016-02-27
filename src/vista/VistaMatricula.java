@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import modelo.Estudiante;
 import modelo.Materia;
 import modelo.Matricula;
+import modelo.MatriculaPK;
 import persistencia.EstudianteJpaController;
 import persistencia.MateriaJpaController;
 import persistencia.MatriculaJpaController;
@@ -106,6 +107,11 @@ public class VistaMatricula extends javax.swing.JPanel {
         });
 
         jButton2.setText("Leer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Actualizar");
 
@@ -262,6 +268,26 @@ public class VistaMatricula extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Long documentoEstudiante = Long.parseLong(jTextField2.getText());
+            Integer numeroMateria = Integer.parseInt(jTextField5.getText());
+            
+            MatriculaJpaController controladorMatricula = new MatriculaJpaController();
+            MatriculaPK llavePrimariaMatricula = new MatriculaPK(documentoEstudiante, numeroMateria);
+            matricula = controladorMatricula.findMatricula(llavePrimariaMatricula);
+            
+            jTextField4.setText(String.valueOf(matricula.getNota()));
+            if (matricula.getEstado().equals("APROBADO")) {
+                jComboBox1.setSelectedIndex(0);
+            } else {
+                jComboBox1.setSelectedIndex(1);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "El estudiante no ha matriculado esta materia.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
