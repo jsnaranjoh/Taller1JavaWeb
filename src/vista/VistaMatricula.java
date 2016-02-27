@@ -8,7 +8,9 @@ package vista;
 import java.awt.event.ItemEvent;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import modelo.Estudiante;
 import modelo.Materia;
+import persistencia.EstudianteJpaController;
 import persistencia.MateriaJpaController;
 
 /**
@@ -19,6 +21,9 @@ public class VistaMatricula extends javax.swing.JPanel {
 
     private DefaultComboBoxModel materiaComboBoxModel;
     private List<Materia> listaMateria;
+    
+    private DefaultComboBoxModel estudianteComboBoxModel;
+    private List<Estudiante> listaEstudiante;
     /**
      * Creates new form VistaMatricula
      */
@@ -27,12 +32,20 @@ public class VistaMatricula extends javax.swing.JPanel {
          * Obtiene la lista de nombres de materias y se agregan a un modelo de comboBox
          * dicho modelo es cargado en jComboBox2 para que el usuario seleccione una opción
          */
-        this.materiaComboBoxModel = new DefaultComboBoxModel();
+        materiaComboBoxModel = new DefaultComboBoxModel();
         MateriaJpaController controladorMateria = new MateriaJpaController();
         listaMateria = controladorMateria.findMateriaEntities();
         for (Materia materia : listaMateria) {
             Object nombreMateria = materia.getNombremateria();
             materiaComboBoxModel.addElement(nombreMateria);
+        }
+        
+        estudianteComboBoxModel = new DefaultComboBoxModel();
+        EstudianteJpaController controladorEstudiante = new EstudianteJpaController();
+        listaEstudiante = controladorEstudiante.findEstudianteEntities();
+        for (Estudiante estudiante : listaEstudiante) {
+            Object nombreEstudiante = estudiante.getNombreestudiante() + " " + estudiante.getApellidoestudiante();
+            estudianteComboBoxModel.addElement(nombreEstudiante);
         }
         initComponents();
         /**
@@ -43,6 +56,10 @@ public class VistaMatricula extends javax.swing.JPanel {
         int indexMateriaSeleccionada = jComboBox2.getSelectedIndex();
         int numeroMateriaSeleccionada = listaMateria.get(indexMateriaSeleccionada).getNumeromateria();
         jTextField5.setText(String.valueOf(numeroMateriaSeleccionada));
+        
+        int indexEstudianteSeleccionado = jComboBox3.getSelectedIndex();
+        Long numeroEstudianteSeleccionado = listaEstudiante.get(indexEstudianteSeleccionado).getDocumentoestudiante();
+        jTextField2.setText(String.valueOf(numeroEstudianteSeleccionado));
     }
 
     /**
@@ -55,7 +72,6 @@ public class VistaMatricula extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -70,14 +86,9 @@ public class VistaMatricula extends javax.swing.JPanel {
         jTextField5 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         jLabel2.setText("Nombre Estudiante");
-
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField1FocusLost(evt);
-            }
-        });
 
         jLabel3.setText("No. Documento Estudiante");
 
@@ -110,17 +121,24 @@ public class VistaMatricula extends javax.swing.JPanel {
             }
         });
 
+        jComboBox3.setModel(estudianteComboBoxModel);
+        jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox3ItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -131,7 +149,7 @@ public class VistaMatricula extends javax.swing.JPanel {
                         .addComponent(jButton4))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -139,17 +157,17 @@ public class VistaMatricula extends javax.swing.JPanel {
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
@@ -160,7 +178,7 @@ public class VistaMatricula extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -206,9 +224,13 @@ public class VistaMatricula extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
-    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
-        System.out.print("hola");
-    }//GEN-LAST:event_jTextField1FocusLost
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            int indexEstudianteSeleccionado = jComboBox3.getSelectedIndex();
+            Long numeroEstudianteSeleccionado = listaEstudiante.get(indexEstudianteSeleccionado).getDocumentoestudiante();
+            jTextField2.setText(String.valueOf(numeroEstudianteSeleccionado));
+        }
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -218,13 +240,13 @@ public class VistaMatricula extends javax.swing.JPanel {
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
