@@ -316,7 +316,24 @@ public class VistaMatricula extends javax.swing.JPanel {
      *
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Long documentoEstudiante = Long.parseLong(jTextField2.getText());
+            Integer numeroMateria = Integer.parseInt(jTextField5.getText());
+            Double nota = Double.parseDouble(jTextField4.getText());
+            String estado = jComboBox1.getSelectedItem()+"";
+            
+            MatriculaJpaController controladorMatricula = new MatriculaJpaController();
+            MatriculaPK llavePrimariaMatricula = new MatriculaPK(documentoEstudiante, numeroMateria);
+            matricula = controladorMatricula.findMatricula(llavePrimariaMatricula);
+            
+            matricula.setNota(nota);
+            matricula.setEstado(estado);
+            
+            controladorMatricula.edit(matricula);
+            JOptionPane.showMessageDialog(this, "Matricula actualizada.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "El estudiante no ha matriculado esta materia.");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
