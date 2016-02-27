@@ -13,6 +13,7 @@ import persistencia.MateriaJpaController;
 /**
  *
  * @author jsnar
+ * Pd: Ola k ase
  */
 public class VistaMateria extends javax.swing.JPanel {
 
