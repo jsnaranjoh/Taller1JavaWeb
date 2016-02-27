@@ -21,16 +21,28 @@ public class VistaMateria extends javax.swing.JPanel {
 
     private int cantidadCarreras;
     private List<Carrera> listaCarreras;
+    private CarreraJpaController controladorCarrera = new CarreraJpaController();
     
     /**
      * Creates new form VistaMateria
      */
     public VistaMateria() {
+        
+        /** 
+         * Variables que serán útiles para la caja de selección de opciones:
+         * Variable para contar la cantidad de items del JComboBox
+         * Variable para contener la lista de carreras (items del JComboBox)
+         */
         cantidadCarreras = controladorCarrera.getCarreraCount();
         listaCarreras = controladorCarrera.findCarreraEntities();
         
         initComponents();
         
+        /**
+         * Se almacena para leer el índice del item seleccionado.
+         * De acuerdo al índice se obtendrá de la lista el nombre de la carrera
+         * y permitirá que un campo de texto la visualice.
+         */
         int indexCarrera = jComboBox1.getSelectedIndex();
         String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
         jTextField4.setText(nombreCarrera);
@@ -175,12 +187,15 @@ public class VistaMateria extends javax.swing.JPanel {
             Integer numMateria = Integer.parseInt(jTextField1.getText());
             String nomMateria = jTextField2.getText();
             Integer numCreditos = Integer.parseInt(jTextField3.getText());
-            Integer numCarrera = (Integer) jComboBox1.getSelectedItem();
+            Carrera carrera = (Carrera) jComboBox1.getSelectedItem();   // Objeto Carrera seleccionado
 
             materia.setNumeromateria(numMateria);
             materia.setNombremateria(nomMateria);
             materia.setCreditosmateria(numCreditos);
-            materia.getNumerocarrera().setNumerocarrera(numCarrera);
+            
+            carrera.getNumerocarrera();         // Se obtiene el número de carrera del objeto
+            materia.setNumerocarrera(carrera);  // Con que se sepa el numerocarrera el programa sabrá a 
+                                                // qué carrera se le debe asignar la materia
             
             controladorMateria.create(materia);
             JOptionPane.showMessageDialog(null, "Materia adicionada con éxito.");
@@ -188,12 +203,23 @@ public class VistaMateria extends javax.swing.JPanel {
             jTextField1.setText("");
             jTextField2.setText("");
             jTextField3.setText("");
-            jTextField4.setText("");
+            jTextField4.setText("");            
+            this.jComboBox1ItemStateChanged();
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    // Método sobrecargado para la reinicialización del JComboBox al primer item.
+    private void jComboBox1ItemStateChanged() {                                            
+        int indexCarrera = 0;
+        jComboBox1.setSelectedIndex(indexCarrera);
+        String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
+        jTextField4.setText(nombreCarrera);
+    }    
+    
+    // Método que permitirá visualizar la carrera que se seleccionó.
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         int indexCarrera = jComboBox1.getSelectedIndex();
         String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
@@ -217,5 +243,4 @@ public class VistaMateria extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
-    CarreraJpaController controladorCarrera = new CarreraJpaController();
 }
