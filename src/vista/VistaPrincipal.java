@@ -55,7 +55,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Matricula");
+        jButton3.setText("Matrícula");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
