@@ -228,6 +228,7 @@ public class VistaMatricula extends javax.swing.JPanel {
             int indexMateriaSeleccionada = jComboBox2.getSelectedIndex();
             int numeroMateriaSeleccionada = listaMateria.get(indexMateriaSeleccionada).getNumeromateria();
             jTextField5.setText(String.valueOf(numeroMateriaSeleccionada));
+            jTextField4.setText("");
         }
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
