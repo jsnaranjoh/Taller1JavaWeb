@@ -5,7 +5,9 @@
  */
 package vista;
 
+import java.util.List;
 import javax.swing.JOptionPane;
+import modelo.Carrera;
 import modelo.Materia;
 import persistencia.CarreraJpaController;
 import persistencia.MateriaJpaController;
@@ -13,14 +15,25 @@ import persistencia.MateriaJpaController;
 /**
  *
  * @author jsnar
+ * Pd: Ola k ase
  */
 public class VistaMateria extends javax.swing.JPanel {
 
+    private int cantidadCarreras;
+    private List<Carrera> listaCarreras;
+    
     /**
      * Creates new form VistaMateria
      */
     public VistaMateria() {
+        cantidadCarreras = controladorCarrera.getCarreraCount();
+        listaCarreras = controladorCarrera.findCarreraEntities();
+        
         initComponents();
+        
+        int indexCarrera = jComboBox1.getSelectedIndex();
+        String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
+        jTextField4.setText(nombreCarrera);
     }
 
     /**
@@ -54,7 +67,7 @@ public class VistaMateria extends javax.swing.JPanel {
 
         jLabel5.setText("Carrera");
 
-        jTextField4.setEnabled(false);
+        jTextField4.setFocusable(false);
 
         jButton1.setText("Crear");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -69,8 +82,13 @@ public class VistaMateria extends javax.swing.JPanel {
 
         jButton4.setText("Eliminar ");
 
-        jComboBox1.setMaximumRowCount(controladorCarrera.getCarreraCount());
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(controladorCarrera.findCarreraEntities().toArray()));
+        jComboBox1.setMaximumRowCount(cantidadCarreras);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(listaCarreras.toArray()));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -81,7 +99,7 @@ public class VistaMateria extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -91,23 +109,27 @@ public class VistaMateria extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(155, 155, 155)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jButton1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(jButton1))
+                            .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
@@ -171,6 +193,12 @@ public class VistaMateria extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        int indexCarrera = jComboBox1.getSelectedIndex();
+        String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
+        jTextField4.setText(nombreCarrera);
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
