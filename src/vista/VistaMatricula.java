@@ -19,10 +19,7 @@ import persistencia.MateriaJpaController;
  */
 public class VistaMatricula extends javax.swing.JPanel {
 
-    private DefaultComboBoxModel materiaComboBoxModel;
     private List<Materia> listaMateria;
-    
-    private DefaultComboBoxModel estudianteComboBoxModel;
     private List<Estudiante> listaEstudiante;
     /**
      * Creates new form VistaMatricula
@@ -32,7 +29,7 @@ public class VistaMatricula extends javax.swing.JPanel {
          * Obtiene la lista de nombres de materias y se agregan a un modelo de comboBox
          * dicho modelo es cargado en jComboBox2 para que el usuario seleccione una opción
          */
-        materiaComboBoxModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel materiaComboBoxModel = new DefaultComboBoxModel();
         MateriaJpaController controladorMateria = new MateriaJpaController();
         listaMateria = controladorMateria.findMateriaEntities();
         for (Materia materia : listaMateria) {
@@ -40,7 +37,7 @@ public class VistaMatricula extends javax.swing.JPanel {
             materiaComboBoxModel.addElement(nombreMateria);
         }
         
-        estudianteComboBoxModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel estudianteComboBoxModel = new DefaultComboBoxModel();
         EstudianteJpaController controladorEstudiante = new EstudianteJpaController();
         listaEstudiante = controladorEstudiante.findEstudianteEntities();
         for (Estudiante estudiante : listaEstudiante) {
@@ -48,17 +45,17 @@ public class VistaMatricula extends javax.swing.JPanel {
             estudianteComboBoxModel.addElement(nombreEstudiante);
         }
         initComponents();
+        jComboBox2.setModel(materiaComboBoxModel);
+        jComboBox3.setModel(estudianteComboBoxModel);
         /**
          * Lee el indice de la materia seleccionada en el comboBox, el indice es el mismo
          * que en la lista de materias, por lo tanto dicho indice sirve para consular el numero de materia
          * en la lista de materias  y lo agrega a jTextField5
          */
-        int indexMateriaSeleccionada = jComboBox2.getSelectedIndex();
-        int numeroMateriaSeleccionada = listaMateria.get(indexMateriaSeleccionada).getNumeromateria();
+        int numeroMateriaSeleccionada = listaMateria.get(0).getNumeromateria();
         jTextField5.setText(String.valueOf(numeroMateriaSeleccionada));
         
-        int indexEstudianteSeleccionado = jComboBox3.getSelectedIndex();
-        Long numeroEstudianteSeleccionado = listaEstudiante.get(indexEstudianteSeleccionado).getDocumentoestudiante();
+        Long numeroEstudianteSeleccionado = listaEstudiante.get(0).getDocumentoestudiante();
         jTextField2.setText(String.valueOf(numeroEstudianteSeleccionado));
     }
 
@@ -114,14 +111,12 @@ public class VistaMatricula extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "APROBADO", "DESAPROBADO" }));
 
-        jComboBox2.setModel(materiaComboBoxModel);
         jComboBox2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox2ItemStateChanged(evt);
             }
         });
 
-        jComboBox3.setModel(estudianteComboBoxModel);
         jComboBox3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox3ItemStateChanged(evt);
