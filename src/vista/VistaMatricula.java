@@ -47,11 +47,7 @@ public class VistaMatricula extends javax.swing.JPanel {
         initComponents();
         jComboBox2.setModel(materiaComboBoxModel);
         jComboBox3.setModel(estudianteComboBoxModel);
-        /**
-         * Lee el indice de la materia seleccionada en el comboBox, el indice es el mismo
-         * que en la lista de materias, por lo tanto dicho indice sirve para consular el numero de materia
-         * en la lista de materias  y lo agrega a jTextField5
-         */
+
         int numeroMateriaSeleccionada = listaMateria.get(0).getNumeromateria();
         jTextField5.setText(String.valueOf(numeroMateriaSeleccionada));
         
@@ -208,7 +204,7 @@ public class VistaMatricula extends javax.swing.JPanel {
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         /**
          * Cuando se seleeciona una opcion en el comboBox
-         * lee el indice de la materia seleccionada en el comboBox, el indice es el mismo
+         * lee el indice de la materia seleccionada, el indice es el mismo
          * que en la lista de materias, por lo tanto dicho indice sirve para consular el numero de materia
          * en la lista de materias y lo agrega a jTextField5
          */
