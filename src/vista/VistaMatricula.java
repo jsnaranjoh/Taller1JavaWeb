@@ -8,10 +8,13 @@ package vista;
 import java.awt.event.ItemEvent;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import modelo.Estudiante;
 import modelo.Materia;
+import modelo.Matricula;
 import persistencia.EstudianteJpaController;
 import persistencia.MateriaJpaController;
+import persistencia.MatriculaJpaController;
 
 /**
  *
@@ -21,10 +24,12 @@ public class VistaMatricula extends javax.swing.JPanel {
 
     private List<Materia> listaMateria;
     private List<Estudiante> listaEstudiante;
+    private Matricula matricula;
     /**
      * Creates new form VistaMatricula
      */
     public VistaMatricula() {
+        matricula = new Matricula();
         /**
          * Obtiene la lista de nombres de materias y se agregan a un modelo de comboBox
          * dicho modelo es cargado en jComboBox2 para que el usuario seleccione una opción
@@ -94,6 +99,11 @@ public class VistaMatricula extends javax.swing.JPanel {
         jLabel6.setText("Estado");
 
         jButton1.setText("Crear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Leer");
 
@@ -222,6 +232,36 @@ public class VistaMatricula extends javax.swing.JPanel {
             jTextField2.setText(String.valueOf(numeroEstudianteSeleccionado));
         }
     }//GEN-LAST:event_jComboBox3ItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Long documentoEstudiante = Long.parseLong(jTextField2.getText());
+            Integer numeroMateria = Integer.parseInt(jTextField5.getText());
+            Double nota = Double.parseDouble(jTextField4.getText());
+            String estado = jComboBox1.getSelectedItem()+"";
+            
+            Estudiante estudiante;
+            EstudianteJpaController controladorEstudiante = new EstudianteJpaController();
+            estudiante = controladorEstudiante.findEstudiante(documentoEstudiante);
+            
+            Materia materia;
+            MateriaJpaController controladorMateria = new MateriaJpaController();
+            materia = controladorMateria.findMateria(numeroMateria);
+            
+            matricula.setEstudiante(estudiante);
+            matricula.setMateria(materia);
+            matricula.setNota(nota);
+            matricula.setEstado(estado);
+            
+            MatriculaJpaController controladorMatricula= new MatriculaJpaController();
+            controladorMatricula.create(matricula);
+            JOptionPane.showMessageDialog(this, "Matricula realizada exitosamente");
+            
+            jTextField4.setText("");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -20,7 +20,7 @@ public class VistaEstudiante extends javax.swing.JPanel {
      * Creates new form VistaEstudiante
      */
     public VistaEstudiante() {
-        this.estudiante = new Estudiante();
+        estudiante = new Estudiante();
         initComponents();
     }
 

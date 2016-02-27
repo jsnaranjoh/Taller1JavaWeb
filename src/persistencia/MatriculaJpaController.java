@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.Estudiante;
@@ -29,6 +30,11 @@ public class MatriculaJpaController implements Serializable {
     public MatriculaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public MatriculaJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("Taller1JavaWebPU");
+    }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
