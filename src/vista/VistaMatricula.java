@@ -7,6 +7,8 @@ package vista;
 
 import java.awt.event.ItemEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelo.Estudiante;
@@ -16,6 +18,7 @@ import modelo.MatriculaPK;
 import persistencia.EstudianteJpaController;
 import persistencia.MateriaJpaController;
 import persistencia.MatriculaJpaController;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -114,8 +117,18 @@ public class VistaMatricula extends javax.swing.JPanel {
         });
 
         jButton3.setText("Actualizar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Eliminar ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("No. Materia");
 
@@ -240,6 +253,10 @@ public class VistaMatricula extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jComboBox3ItemStateChanged
 
+    /**
+     * Crear Matriícula
+     *
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Long documentoEstudiante = Long.parseLong(jTextField2.getText());
@@ -270,6 +287,10 @@ public class VistaMatricula extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Leer Matrícula
+     *
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             Long documentoEstudiante = Long.parseLong(jTextField2.getText());
@@ -289,6 +310,32 @@ public class VistaMatricula extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "El estudiante no ha matriculado esta materia.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Actualizar Matrícula
+     *
+     */
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    /**
+     * Eliminar Matrícula
+     * 
+     */
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            Long documentoEstudiante = Long.parseLong(jTextField2.getText());
+            Integer numeroMateria = Integer.parseInt(jTextField5.getText());
+            
+            MatriculaJpaController controladorMatricula = new MatriculaJpaController();
+            MatriculaPK llavePrimariaMatricula = new MatriculaPK(documentoEstudiante, numeroMateria);
+            controladorMatricula.destroy(llavePrimariaMatricula);
+            JOptionPane.showMessageDialog(this, "Matricula eliminada.");
+        } catch (NonexistentEntityException ex) {
+            JOptionPane.showMessageDialog(this, "El estudiante no ha matriculado esta materia.");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
