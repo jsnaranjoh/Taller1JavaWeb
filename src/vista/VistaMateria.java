@@ -6,11 +6,15 @@
 package vista;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Carrera;
 import modelo.Materia;
 import persistencia.CarreraJpaController;
 import persistencia.MateriaJpaController;
+import persistencia.exceptions.IllegalOrphanException;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -89,10 +93,25 @@ public class VistaMateria extends javax.swing.JPanel {
         });
 
         jButton2.setText("Leer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Actualizar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Eliminar ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setMaximumRowCount(cantidadCarreras);
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(listaCarreras.toArray()));
@@ -179,6 +198,16 @@ public class VistaMateria extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
+    // Método para limpiar los campos
+    private void limpiar(){
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");            
+        this.jComboBox1ItemStateChanged();
+    }
+    
+    // Método que permite crear la materia al presionar el botón "Crear"
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             MateriaJpaController controladorMateria = new MateriaJpaController();
@@ -200,11 +229,7 @@ public class VistaMateria extends javax.swing.JPanel {
             controladorMateria.create(materia);
             JOptionPane.showMessageDialog(null, "Materia adicionada con éxito.");
             
-            jTextField1.setText("");
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");            
-            this.jComboBox1ItemStateChanged();
+            this.limpiar();
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -225,6 +250,58 @@ public class VistaMateria extends javax.swing.JPanel {
         String nombreCarrera = listaCarreras.get(indexCarrera).getNombrecarrera();
         jTextField4.setText(nombreCarrera);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    // Método que permite leer la información de la materia al accionar el botón "Leer"
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(jTextField1.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Ingrese código materia.");
+        }
+        else{
+            try{
+                MateriaJpaController controladorMateria = new MateriaJpaController();
+
+                Integer numMateria = Integer.parseInt(jTextField1.getText());        
+                Materia materia = controladorMateria.findMateria(numMateria);
+
+                jTextField2.setText(materia.getNombremateria());
+                jTextField3.setText(materia.getCreditosmateria().toString());
+                jComboBox1.setSelectedItem(materia.getNumerocarrera());
+                jTextField4.setText(materia.getNumerocarrera().getNombrecarrera());            
+            }
+            catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Materia no existe.");
+            }            
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    // Método que permite la eliminación de la materia al presionar el botón "Eliminar"
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(jTextField1.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Ingrese código materia.");
+        }
+        else{
+            try {
+                MateriaJpaController controladorMateria = new MateriaJpaController();
+
+                Integer numMateria = Integer.parseInt(jTextField1.getText());
+                Materia materia = controladorMateria.findMateria(numMateria);
+
+                controladorMateria.destroy(numMateria);
+                JOptionPane.showMessageDialog(null, "Materia eliminada con éxito.");
+            } catch (NumberFormatException | IllegalOrphanException | NonexistentEntityException ex) {
+                JOptionPane.showMessageDialog(null, "Materia no existe.");
+            }            
+        }
+        
+        jTextField1.setText("");
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    // Método que permite editar la información de la materia al presionar el botón "Actualizar"
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
