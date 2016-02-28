@@ -205,12 +205,19 @@ public class MateriaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The materia with id " + id + " no longer exists.", enfe);
             }
-            
-            List<Matricula> listaMatricula = materia.getMatriculaList();
-            for (Matricula matricula : listaMatricula) {
-                em.remove(matricula);
+            /*
+            List<String> illegalOrphanMessages = null;
+            List<Matricula> matriculaListOrphanCheck = materia.getMatriculaList();
+            for (Matricula matriculaListOrphanCheckMatricula : matriculaListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Materia (" + materia + ") cannot be destroyed since the Matricula " + matriculaListOrphanCheckMatricula + " in its matriculaList field has a non-nullable materia field.");
             }
-            
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            */
             Carrera numerocarrera = materia.getNumerocarrera();
             if (numerocarrera != null) {
                 numerocarrera.getMateriaList().remove(materia);

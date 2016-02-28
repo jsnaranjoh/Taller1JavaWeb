@@ -146,12 +146,19 @@ public class EstudianteJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The estudiante with id " + id + " no longer exists.", enfe);
             }
-
-            List<Matricula> listaMatricula = estudiante.getMatriculaList();
-            for (Matricula matricula : listaMatricula) {
-                em.remove(matricula);
+            /*
+            List<String> illegalOrphanMessages = null;
+            List<Matricula> matriculaListOrphanCheck = estudiante.getMatriculaList();
+            for (Matricula matriculaListOrphanCheckMatricula : matriculaListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Estudiante (" + estudiante + ") cannot be destroyed since the Matricula " + matriculaListOrphanCheckMatricula + " in its matriculaList field has a non-nullable estudiante field.");
             }
-            
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            */
             em.remove(estudiante);
             em.getTransaction().commit();
         } finally {
