@@ -17,7 +17,6 @@ import persistencia.exceptions.NonexistentEntityException;
 /**
  *
  * @author jsnar
- * Pd: Ola k ase
  */
 public class VistaMateria extends javax.swing.JPanel {
 
@@ -230,7 +229,7 @@ public class VistaMateria extends javax.swing.JPanel {
             this.limpiar();
             
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -269,6 +268,7 @@ public class VistaMateria extends javax.swing.JPanel {
             }
             catch(Exception ex){
                 JOptionPane.showMessageDialog(null, "Materia no existe.");
+                this.limpiar();
             }            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -293,12 +293,44 @@ public class VistaMateria extends javax.swing.JPanel {
             }            
         }
         
-        jTextField1.setText("");
+        this.limpiar();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     // Método que permite editar la información de la materia al presionar el botón "Actualizar"
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+        if(jTextField1.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Ingrese código materia.");
+        }
+        else{
+            try {
+                MateriaJpaController controladorMateria = new MateriaJpaController();
+
+                Integer numMateria = Integer.parseInt(jTextField1.getText());        
+                Materia materia = controladorMateria.findMateria(numMateria);
+
+                String nomMateria = jTextField2.getText();
+                Integer numCreditos = Integer.parseInt(jTextField3.getText());
+                Carrera carrera = (Carrera) jComboBox1.getSelectedItem();   // Objeto Carrera seleccionado
+
+                materia.setNumeromateria(numMateria);
+                materia.setNombremateria(nomMateria);
+                materia.setCreditosmateria(numCreditos);
+
+                carrera.getNumerocarrera();         // Se obtiene el número de carrera del objeto
+                materia.setNumerocarrera(carrera);  // Con que se sepa el numerocarrera el programa sabrá a
+                // qué carrera se le debe asignar la materia
+
+                controladorMateria.edit(materia);
+                JOptionPane.showMessageDialog(null, "Materia actualizada con éxito.");
+
+                this.limpiar();
+            } catch (NonexistentEntityException ex) {
+                JOptionPane.showMessageDialog(null, "Materia no existe.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ningún campo puede quedar vacío.");
+            }        
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
    
 
